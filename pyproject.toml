@@ -20,6 +20,7 @@ pytest = "^8.3.5"
 pytest-cov = "^6.0.0"
 taskipy = "^1.14.1"
 ruff = "^0.11.0"
+faker = "^37.0.0"
 
 [tool.ruff]
 line-length = 79
