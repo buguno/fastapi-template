@@ -24,3 +24,7 @@ ruff = "^0.11.0"
 [tool.ruff]
 line-length = 79
 extend-exclude = ['migrations']
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
