@@ -36,3 +36,12 @@ quote-style = 'single'
 [tool.pytest.ini_options]
 pythonpath = "."
 addopts = '-p no:warnings'
+
+[tool.taskipy.tasks]
+lint = 'ruff check'
+pre_format = 'ruff check --fix'
+format = 'ruff format'
+run = 'fastapi dev app/app.py'
+pre_test = 'task lint'
+test = 'pytest -s -x --cov=app -vv'
+post_test = 'coverage html'
