@@ -1,14 +1,11 @@
 from dataclasses import asdict
 
-from faker import Faker
 from sqlalchemy import select
 
 from app.models import User
 
-faker = Faker()
 
-
-def test_create_user(session, mock_db_time):
+def test_create_user(session, faker, mock_db_time):
     username = faker.user_name()
     password = faker.password()
     email = faker.email()
