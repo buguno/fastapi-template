@@ -2,6 +2,7 @@ from contextlib import contextmanager
 from datetime import datetime
 
 import pytest
+from faker import Faker
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import Session
@@ -24,6 +25,11 @@ def session():
         yield session
 
     table_registry.metadata.drop_all(engine)
+
+
+@pytest.fixture
+def faker():
+    return Faker()
 
 
 @contextmanager
