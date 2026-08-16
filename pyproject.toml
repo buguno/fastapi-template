@@ -41,6 +41,9 @@ addopts = ['-p', 'no:warnings', '--cov=fast_zero', '--cov-context=test']
 [tool.typos.files]
 extend-exclude = ["*.md"]
 
+[tool.poe]
+poetry_command = ""
+
 [tool.poe.tasks]
 lint = { cmd = "ruff check" }
 format.sequence = [
