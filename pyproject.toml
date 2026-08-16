@@ -41,3 +41,16 @@ addopts = ['-p', 'no:warnings', '--cov=fast_zero', '--cov-context=test']
 
 [tool.typos.files]
 extend-exclude = ["*.md"]
+
+[tool.poe.tasks]
+lint = { cmd = "ruff check" }
+format.sequence = [
+    { cmd = "ruff check --fix" },
+    { cmd = "ruff format" },
+]
+serve = "fastapi dev app/main.py"
+test.sequence = [
+    "lint",
+    { cmd = "pytest -s -x -vv $POE_EXTRA_ARGS" },
+    { cmd = "coverage html --show-contexts" },
+]
