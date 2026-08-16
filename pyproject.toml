@@ -38,3 +38,6 @@ quote-style = 'single'
 [tool.pytest]
 pythonpath = ['.']
 addopts = ['-p', 'no:warnings', '--cov=fast_zero', '--cov-context=test']
+
+[tool.typos.files]
+extend-exclude = ["*.md"]
