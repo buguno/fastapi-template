@@ -1,4 +1,4 @@
-name: Pipeline
+name: CI
 on: [push, pull_request]
 
 jobs:
@@ -22,7 +22,9 @@ jobs:
           python-version: '3.14'
 
       - name: 📦 Install Poetry
-        run: pipx install poetry
+        run: |
+          pipx install poetry
+          pipx inject poetry "poethepoet[poetry_plugin]"
 
       - name: 🔧 Install dependencies
         run: poetry install
