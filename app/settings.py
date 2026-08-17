@@ -1,4 +1,3 @@
-from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -8,12 +7,14 @@ class Settings(BaseSettings):
     )
 
     ENVIRONMENT: str = 'development'
+    DATABASE_URL: str
+    SECRET_KEY: str
+    ALGORITHM: str = 'HS256'
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
     @property
     def is_production(self) -> bool:
         return self.ENVIRONMENT == 'production'
 
-    DATABASE_URL: str = Field(init=False)
 
-
-settings = Settings()
+settings = Settings()  # type: ignore
