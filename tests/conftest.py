@@ -81,6 +81,25 @@ def user(session, faker):
 
 
 @pytest.fixture
+def users(session, faker):
+    users = [
+        User(
+            username=faker.unique.user_name(),
+            email=faker.unique.email(),
+            password=get_password_hash(faker.password()),
+        )
+        for _ in range(4)
+    ]
+    session.add_all(users)
+    session.commit()
+
+    for user in users:
+        session.refresh(user)
+
+    return users
+
+
+@pytest.fixture
 def token(client, user):
     response = client.post(
         '/auth/token',
