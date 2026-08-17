@@ -1,8 +1,10 @@
 from http import HTTPStatus
+from typing import Annotated
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from app.database import DbSession
+from app.schemas.filters import FilterPage
 from app.schemas.message import Message
 from app.schemas.user import UserList, UserPublic, UserSchema
 from app.security import CurrentUser
@@ -18,8 +20,8 @@ def create_user(data: UserSchema, session: DbSession):
 
 
 @router.get('/', response_model=UserList)
-def read_users(session: DbSession, skip: int = 0, limit: int = 100):
-    users = user_service.list_users(session, skip=skip, limit=limit)
+def read_users(session: DbSession, filters: Annotated[FilterPage, Query()]):
+    users = user_service.list_users(session, filters)
     return {'users': users}
 
 
