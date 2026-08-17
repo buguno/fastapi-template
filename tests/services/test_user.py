@@ -11,14 +11,14 @@ from app.services import user as user_service
 
 
 @pytest.fixture
-def other_user(faker):
+def unknown_user(faker):
     """Unpersisted user, to simulate an id that does not exist."""
     stranger = User(
         username=faker.user_name(),
         email=faker.email(),
         password=faker.password(),
     )
-    stranger.id = 999
+    stranger.id = 999999
 
     return stranger
 
@@ -44,7 +44,7 @@ async def test_create_user_with_taken_email(session, user, faker):
 
 
 @pytest.mark.asyncio
-async def test_update_user_from_another_user(session, user, faker):
+async def test_update_user_from_another_user(session, user, other_user, faker):
     data = UserSchema(
         username=faker.user_name(),
         email=faker.email(),
@@ -52,11 +52,11 @@ async def test_update_user_from_another_user(session, user, faker):
     )
 
     with pytest.raises(NotEnoughPermissions, match='Not enough permissions'):
-        await user_service.update_user(session, user.id + 1, data, user)
+        await user_service.update_user(session, user.id, data, other_user)
 
 
 @pytest.mark.asyncio
-async def test_update_user_that_does_not_exist(session, other_user, faker):
+async def test_update_user_that_does_not_exist(session, unknown_user, faker):
     data = UserSchema(
         username=faker.user_name(),
         email=faker.email(),
@@ -65,17 +65,17 @@ async def test_update_user_that_does_not_exist(session, other_user, faker):
 
     with pytest.raises(UserNotFound, match='User not found'):
         await user_service.update_user(
-            session, other_user.id, data, other_user
+            session, unknown_user.id, data, unknown_user
         )
 
 
 @pytest.mark.asyncio
-async def test_delete_user_from_another_user(session, user):
+async def test_delete_user_from_another_user(session, user, other_user):
     with pytest.raises(NotEnoughPermissions, match='Not enough permissions'):
-        await user_service.delete_user(session, user.id + 1, user)
+        await user_service.delete_user(session, user.id, other_user)
 
 
 @pytest.mark.asyncio
-async def test_delete_user_that_does_not_exist(session, other_user):
+async def test_delete_user_that_does_not_exist(session, unknown_user):
     with pytest.raises(UserNotFound, match='User not found'):
-        await user_service.delete_user(session, other_user.id, other_user)
+        await user_service.delete_user(session, unknown_user.id, unknown_user)
