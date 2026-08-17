@@ -2,10 +2,11 @@ from contextlib import contextmanager
 from datetime import datetime
 
 import pytest
+import pytest_asyncio
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, event
-from sqlalchemy.orm import Session
-from sqlalchemy.pool import StaticPool
+from sqlalchemy import event
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from testcontainers.postgres import PostgresContainer
 
 from app.database import get_session
 from app.main import app
@@ -30,20 +31,23 @@ def client(session):
     app.dependency_overrides.clear()
 
 
-@pytest.fixture
-def session():
-    engine = create_engine(
-        'sqlite:///:memory:',
-        connect_args={'check_same_thread': False},
-        poolclass=StaticPool,
-    )
-    table_registry.metadata.create_all(engine)
+@pytest.fixture(scope='session')
+def engine():
+    with PostgresContainer('postgres:16', driver='psycopg') as postgres:
+        _engine = create_async_engine(postgres.get_connection_url())
+        yield _engine
 
-    with Session(engine) as session:
+
+@pytest_asyncio.fixture
+async def session(engine):
+    async with engine.begin() as conn:
+        await conn.run_sync(table_registry.metadata.create_all)
+
+    async with AsyncSession(engine, expire_on_commit=False) as session:
         yield session
 
-    table_registry.metadata.drop_all(engine)
-    engine.dispose()
+    async with engine.begin() as conn:
+        await conn.run_sync(table_registry.metadata.drop_all)
 
 
 @contextmanager
@@ -67,8 +71,8 @@ def mock_db_time():
     return _mock_db_time
 
 
-@pytest.fixture
-def user(session, faker):
+@pytest_asyncio.fixture
+async def user(session, faker):
     username = faker.user_name()
     email = faker.email()
     password = faker.password()
@@ -77,16 +81,16 @@ def user(session, faker):
         username=username, email=email, password=get_password_hash(password)
     )
     session.add(user)
-    session.commit()
-    session.refresh(user)
+    await session.commit()
+    await session.refresh(user)
 
     user.clean_password = password
 
     return user
 
 
-@pytest.fixture
-def users(session, faker):
+@pytest_asyncio.fixture
+async def users(session, faker):
     users = [
         User(
             username=faker.unique.user_name(),
@@ -96,10 +100,10 @@ def users(session, faker):
         for _ in range(4)
     ]
     session.add_all(users)
-    session.commit()
+    await session.commit()
 
     for user in users:
-        session.refresh(user)
+        await session.refresh(user)
 
     return users
 
