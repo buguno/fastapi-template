@@ -45,6 +45,7 @@ quote-style = 'single'
 [tool.pytest]
 pythonpath = ['.']
 addopts = ['-p', 'no:warnings', '--cov=app', '--cov-context=test', '--cov-branch', '--random-order']
+asyncio_default_fixture_loop_scope = 'function'
 
 [tool.typos.files]
 extend-exclude = ["*.md"]
