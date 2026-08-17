@@ -13,8 +13,8 @@ OAuth2Form = Annotated[OAuth2PasswordRequestForm, Depends()]
 
 
 @router.post('/token', response_model=Token)
-def login_for_access_token(form_data: OAuth2Form, session: DbSession):
-    access_token = auth_service.authenticate(
+async def login_for_access_token(form_data: OAuth2Form, session: DbSession):
+    access_token = await auth_service.authenticate(
         session, form_data.username, form_data.password
     )
 
