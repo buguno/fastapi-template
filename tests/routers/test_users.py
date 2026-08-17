@@ -1,5 +1,7 @@
 from http import HTTPStatus
 
+import pytest
+
 from app.schemas.user import UserPublic
 
 
@@ -28,6 +30,25 @@ def test_read_users_with_users(client, user):
     user_schema = UserPublic.model_validate(user).model_dump()
     response = client.get('/users/')
     assert response.json() == {'users': [user_schema]}
+
+
+def test_read_users_with_pagination(client, users):
+    response = client.get('/users/?offset=1&limit=2')
+
+    assert response.status_code == HTTPStatus.OK
+    assert [item['id'] for item in response.json()['users']] == [
+        users[1].id,
+        users[2].id,
+    ]
+
+
+@pytest.mark.parametrize(
+    'query', ['offset=-1', 'limit=0', 'limit=101', 'limit=abc']
+)
+def test_read_users_with_invalid_pagination(client, query):
+    response = client.get(f'/users/?{query}')
+
+    assert response.status_code == HTTPStatus.UNPROCESSABLE_CONTENT
 
 
 def test_update_user(client, user, token, faker):
