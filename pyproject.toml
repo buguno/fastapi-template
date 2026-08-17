@@ -72,8 +72,9 @@ format.sequence = [
     { cmd = "ruff format" },
 ]
 serve = "fastapi dev app/main.py"
+coverage = { cmd = "coverage html --show-contexts" }
 test.sequence = [
     "lint",
     { cmd = "pytest -s -x -vv $POE_EXTRA_ARGS" },
-    { cmd = "coverage html --show-contexts" },
+    "coverage",
 ]
