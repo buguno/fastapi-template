@@ -8,6 +8,7 @@ from app.exceptions import (
     UserNotFound,
 )
 from app.models.user import User
+from app.schemas.filters import FilterPage
 from app.schemas.user import UserSchema
 from app.security import get_password_hash
 
@@ -36,10 +37,12 @@ def create_user(session: Session, data: UserSchema) -> User:
     return db_user
 
 
-def list_users(
-    session: Session, skip: int = 0, limit: int = 100
-) -> list[User]:
-    users = list(session.scalars(select(User).offset(skip).limit(limit)).all())
+def list_users(session: Session, filters: FilterPage) -> list[User]:
+    users = list(
+        session.scalars(
+            select(User).offset(filters.offset).limit(filters.limit)
+        ).all()
+    )
     return users
 
 
