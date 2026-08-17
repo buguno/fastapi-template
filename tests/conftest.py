@@ -13,6 +13,11 @@ from app.models import User, table_registry
 from app.security import get_password_hash
 
 
+@pytest.fixture(scope='session')
+def faker_session_locale():
+    return ['pt_BR']
+
+
 @pytest.fixture
 def client(session):
     def get_session_override():
