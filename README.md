@@ -645,7 +645,7 @@ Plain literals are the safer choice:
 
 ```yaml
 env:
-  ENVIRONMENT: test
+  ENVIRONMENT: development
   DATABASE_URL: postgresql+psycopg://ci:ci@localhost:5432/ci
   SECRET_KEY: ci-secret-key-not-used-in-production
   ALGORITHM: HS256
