@@ -15,3 +15,7 @@ async def authenticate(
         raise InvalidCredentials('Incorrect email or password')
 
     return create_access_token(data={'sub': user.email})
+
+
+def refresh(user: User) -> str:
+    return create_access_token(data={'sub': user.email})
