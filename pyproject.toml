@@ -5,6 +5,7 @@ description = ""
 authors = [
     {name = "buguno",email = "brunnodesouzabezerra@gmail.com"}
 ]
+license = "MIT"
 requires-python = ">=3.14,<4.0"
 
 dependencies = [
