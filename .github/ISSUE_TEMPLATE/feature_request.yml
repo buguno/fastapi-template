@@ -1,0 +1,52 @@
+name: ✨ Feature request
+description: Suggest something this template should include
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is a template meant to be copied and extended, so the bar for adding something is whether **most** projects starting from it would want it.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the situation you hit, not the solution you have in mind.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Including doing nothing, or leaving it to each project that uses the template.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part of the template?
+      options:
+        - Application code (routers, services, models)
+        - Authentication and security
+        - Database and migrations
+        - Testing setup
+        - Tooling (Poetry, poe, Ruff, typos)
+        - CI pipeline
+        - Documentation
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This adds value to most projects using the template, not just one specific use case
+        - label: I considered whether this belongs in the README as guidance instead of in the code

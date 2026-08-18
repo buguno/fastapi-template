@@ -1,0 +1,94 @@
+name: 🐛 Bug report
+description: Report something that is not working as expected
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. Please fill in as much as you can — a reproducible case is worth more than a long description.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: A clear description of the problem.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Commands, requests or a failing test.
+      placeholder: |
+        1. poetry install
+        2. poetry run alembic upgrade head
+        3. curl -X POST http://127.0.0.1:8000/users/ -d '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or traceback
+      description: Paste the full traceback. This is automatically formatted as code, so no backticks needed.
+      render: shell
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python version
+      description: Output of `python --version`
+      placeholder: '3.14.6'
+    validations:
+      required: true
+
+  - type: input
+    id: poetry-version
+    attributes:
+      label: Poetry version
+      description: Output of `poetry --version`
+      placeholder: '2.3.3'
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: 'macOS 15.5 (arm64)'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where does it happen?
+      options:
+        - Running the application
+        - Running the test suite
+        - Migrations (Alembic)
+        - Tooling (Poetry, poe, Ruff)
+        - CI pipeline
+        - Documentation
+        - Not sure
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: Docker is running (required for the test suite)
+        - label: My `.env` contains every variable listed in `.env.example`
+        - label: I searched existing issues and did not find a duplicate
+          required: true

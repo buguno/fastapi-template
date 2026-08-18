@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 Documentation
+    url: https://github.com/buguno/fastapi-template#readme
+    about: Setup, architecture, testing and known trade-offs are covered in the README.
+  - name: ⚡ FastAPI documentation
+    url: https://fastapi.tiangolo.com
+    about: For questions about FastAPI itself rather than this template.
+  - name: 🗄️ SQLAlchemy documentation
+    url: https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html
+    about: For questions about the async ORM rather than this template.
