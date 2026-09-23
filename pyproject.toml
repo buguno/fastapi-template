@@ -11,7 +11,7 @@ requires-python = ">=3.14,<4.0"
 dependencies = [
     "fastapi[standard] (>=0.141.1,<0.142.0)",
     "pydantic-settings (>=2.15.0,<3.0.0)",
-    "sqlalchemy[asyncio] (>=2.0.52,<3.0.0)",
+    "sqlalchemy[asyncio] (>=2.0.54,<3.0.0)",
     "alembic (>=1.20.0,<2.0.0)",
     "pyjwt (>=2.14.0,<3.0.0)",
     "pwdlib[argon2] (>=0.3.1,<0.4.0)",
